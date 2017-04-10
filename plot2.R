@@ -24,7 +24,7 @@ datetime <- dmy_hms(datetime)
 # launch the png device
 png(filename = "plot2.png", width = 480, height = 480)
 
-# initialize the plot with no x-axis, and do not display anything yet
+# plot
 plot(datetime, v,  type = "l", xlab = "", ylab = "Global Active Power (kilowatts)")
 
 
