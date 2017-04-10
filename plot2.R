@@ -17,7 +17,7 @@ df <- filter(big_df, Date == "1/2/2007" | Date == "2/2/2007")
 # convert the column to numeric and save it to vector v
 v <- as.numeric(df$Global_active_power)
 
-
+# conversion to a date time object
 datetime <- paste(df$Date, df$Time)
 datetime <- dmy_hms(datetime)
 
