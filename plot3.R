@@ -4,6 +4,9 @@
 # load the dplyr package for easy dataframe manipulation
 library(dplyr)
 
+# load the lubridate package for easy conversion to date/time
+library(lubridate)
+
 # After seeing the dataset starts from 2016-12-16, 
 # I figured 100,000 rows should be enough to contain 2007-02-01 to 2007-02-02
 big_df <- read.csv("household_power_consumption.txt", nrow = 1e5, 
@@ -17,20 +20,23 @@ df <- mutate(df, sub1 =  as.numeric(Sub_metering_1),
              sub2 = as.numeric(Sub_metering_2),
              sub3 = as.numeric(Sub_metering_3))
 
+
+# conversion to a date time object and add it as a new column
+datetime <- paste(df$Date, df$Time)
+datetime <- dmy_hms(datetime)
+df$datetime <- datetime
+
 # launch the png device
 png(filename = "plot3.png", width = 480, height = 480)
 
-# initialize the plot with no x-axis, and do not display anything yet
-plot(df$sub1, xaxt = "n", type = "n", xlab = "", ylab = "Energy sub metering")
+# initialize the plot, 
+plot(df$datetime, df$sub1, col = "black", type = "l", xlab = "", ylab = "Energy sub metering")
 
-# add the x-axis. day changes from Thu to Fri in the middle 
-axis(side = 1, at = c(1, nrow(df)/2 + 1, nrow(df) + 1), labels = c("Thu", "Fri", "Sat"))
 
 # now plot the values
 with(df, {
-        lines(sub1, col = "black")
-        lines(sub2, col = "red")
-        lines(sub3, col = "blue")
+        lines( datetime, sub2, col = "red")
+        lines( datetime, sub3, col = "blue")
 })
 
 # add the legend
